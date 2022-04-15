@@ -3,8 +3,10 @@ import { AlertTitle } from '@mui/material';
 import Button from '@mui/material/Button'
 import Alert from '../reusable/Alert';
 import Box from '@mui/material/Box';
+import { saveLikedFormSubmission } from "../../service/mockServer";
+import { PinDropSharp } from "@mui/icons-material";
 
-export default function AlertService({alerts}) {
+export default function AlertService({alerts, getLikedFormSubmissions}) {
     console.log('alerts:', alerts)
     return (
         <Container sx={{
@@ -18,11 +20,14 @@ export default function AlertService({alerts}) {
             position: 'absolute',
         }}>
             <Box>
-                {alerts.length && alerts.map(alert =>
-                    <Alert severity="info" key={alert.id}
+                {alerts.map(formSubmission => {
+                    return (<Alert severity="info" key={formSubmission.id}
                         action = {
                         <>
-                            <Button color="inherit" size="small">
+                            <Button color="inherit" size="small" onClick={async() => {
+                                await saveLikedFormSubmission(formSubmission)
+                                await getLikedFormSubmissions()
+                            }}>
                             LIKE
                             </Button>
                             <Button color="inherit" size="small">
@@ -31,9 +36,9 @@ export default function AlertService({alerts}) {
                         </>
                     }>
                         <AlertTitle>You have a new Submission!</AlertTitle>
-                        {alert.data.firstName} {alert.data.lastName} <span sx={{fontSize: 12}}>{alert.data.email}</span>
-                    </Alert>
-                )}
+                        {formSubmission.data.firstName} {formSubmission.data.lastName} <span sx={{fontSize: 12}}>{formSubmission.data.email}</span>
+                    </Alert>)
+                })}
             </Box>
         </Container>
     )

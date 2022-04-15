@@ -20,9 +20,10 @@ function App() {
 
   useEffect(() => {
     init()
-  })
+  }, [])
 
   const [alerts, setAlerts] = useState([])
+  const [likedFormSubmissions, setLikedFormSubmissions] = useState([])
 
   function init() {
     onMessage((formSubmission) => {
@@ -30,21 +31,22 @@ function App() {
       setAlerts([...alerts, formSubmission])
       console.log('alerts:', [...alerts, formSubmission])
     })
+    getLikedFormSubmissions()
   }
 
-  async function getFormSubmissions() {
+  async function getLikedFormSubmissions() {
     const submissionsResponse = await fetchLikedFormSubmissions()
-    const likedFormSubmissions = submissionsResponse.formSubmissions
-    console.log('liked form submisions', likedFormSubmissions)
+    setLikedFormSubmissions(submissionsResponse.formSubmissions)
+    console.log('liked form submisions', submissionsResponse.formSubmissions)
   }
 
   return (
     <>
       <Header />
       <Container>
-        <Content />
+        <Content likedFormSubmissions={likedFormSubmissions}/>
       </Container>
-      <AlertService alerts={alerts}/>
+      <AlertService alerts={alerts} getLikedFormSubmissions={getLikedFormSubmissions}/>
     </>
   );
 }
