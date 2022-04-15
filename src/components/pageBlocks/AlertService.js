@@ -1,21 +1,21 @@
 import { Container } from "@mui/material"
 import { AlertTitle } from '@mui/material';
 import Button from '@mui/material/Button'
-import Alert from '../Alert';
+import Alert from '../reusable/Alert';
 import Box from '@mui/material/Box';
 
-export default function AlertContainer({alerts}) {
+export default function AlertService({alerts}) {
     console.log('alerts:', alerts)
     return (
         <Container sx={{
             bottom: 0,
             right: 0,
             maxHeigth: '1200px',
-            height: '100%',
+            height: 'calc(100%-64px)',
             maxWidth: '500px',
-            width: '30vw',
+            width: '60%',
             marginRight: 0,
-            position: 'absolute'
+            position: 'absolute',
         }}>
             <Box>
                 {alerts.length && alerts.map(alert =>

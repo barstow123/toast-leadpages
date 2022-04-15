@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import Container from '@mui/material/Container';
-import AlertContainer from './components/reusable/containers/AlertContainer'
+import AlertService from './components/pageBlocks/AlertService'
 import { onMessage, fetchLikedFormSubmissions } from './service/mockServer';
 
 import Header from './components/pageBlocks/Header';
 import Content from './components/pageBlocks/Content';
 
 function App() {
+
+
+  /*
+    NOTES
+
+    1.) Redux store could be implemented to allow app data (such as toasts) to be accessed via hooks, instead of passed through props
+
+    2.) global constants could be provided via next.js. for example, the path to api calls could be a global constant
+
+  */
 
   useEffect(() => {
     init()
@@ -34,7 +44,7 @@ function App() {
       <Container>
         <Content />
       </Container>
-      <AlertContainer alerts={alerts}/>
+      <AlertService alerts={alerts}/>
     </>
   );
 }
