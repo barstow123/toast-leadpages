@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Container from '@mui/material/Container';
-import Button from '@mui/material/Button'
-import Alert from './Alert';
-import { AlertTitle } from '@mui/material';
+import AlertContainer from './components/reusable/containers/AlertContainer'
 import { onMessage, fetchLikedFormSubmissions } from './service/mockServer';
 
-import Header from './Header';
-import Content from './Content';
+import Header from './components/pageBlocks/Header';
+import Content from './components/pageBlocks/Content';
 
 function App() {
 
@@ -35,23 +33,8 @@ function App() {
       <Header />
       <Container>
         <Content />
-        {alerts.map(alert =>
-            <Alert severity="info"
-              action = {
-                <>
-                  <Button color="inherit" size="small">
-                    LIKE
-                  </Button>
-                  <Button color="inherit" size="small">
-                    X
-                  </Button>
-                </>
-            }>
-              <AlertTitle>You have a new Submission!</AlertTitle>
-              {alert.data.firstName} {alert.data.lastName} <span sx={{fontSize: 12}}>{alert.data.email}</span>
-            </Alert>
-        )}
       </Container>
+      <AlertContainer alerts={alerts}/>
     </>
   );
 }
