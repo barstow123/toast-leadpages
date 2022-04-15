@@ -6,16 +6,6 @@ import {fetchLikedFormSubmissions} from './service/mockServer'
 
 export default function Content() {
 
-  useEffect(() => {
-    getFormSubmissions()
-  }, [])
-
-  async function getFormSubmissions() {
-    const submissionsResponse = await fetchLikedFormSubmissions()
-    const likedFormSubmissions = submissionsResponse.formSubmissions
-    console.log('liked form submisions', likedFormSubmissions)
-  }
-
 
   return (
     <Box sx={{marginTop: 3}}>
