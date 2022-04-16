@@ -4,7 +4,6 @@ import Button from '@mui/material/Button'
 import Alert from '../reusable/Alert';
 import Box from '@mui/material/Box';
 import { saveLikedFormSubmission } from "../../service/accessAPI";
-import { PinDropSharp } from "@mui/icons-material";
 
 export default function AlertService({alerts, setAlerts, getLikedFormSubmissions}) {
 
@@ -19,6 +18,33 @@ export default function AlertService({alerts, setAlerts, getLikedFormSubmissions
         setAlerts(newAlerts)
     }
 
+    const alertsList = alerts.map((formSubmission, index) => {
+        return (<Alert severity="info" key={formSubmission.id}
+            action = {
+            <>
+                <Button color="inherit" size="small" onClick={async() => {
+                    try {
+                        closeAlert(index)
+                        await saveLikedFormSubmission(formSubmission)
+                        await getLikedFormSubmissions()
+                    } catch(e) {
+                        console.log('error occured:', e)
+                    }
+                }}>
+                LIKE
+                </Button>
+                <Button color="inherit" size="small" onClick={() => {
+                    closeAlert(index)
+                }}>
+                X
+                </Button>
+            </>
+        }>
+            <AlertTitle>You have a new Submission!</AlertTitle>
+            {formSubmission.data.firstName} {formSubmission.data.lastName} <span sx={{fontSize: 12}}>{formSubmission.data.email}</span>
+        </Alert>)
+    })
+
     return (
         <Container sx={{
             bottom: 0,
@@ -31,32 +57,7 @@ export default function AlertService({alerts, setAlerts, getLikedFormSubmissions
             position: 'absolute',
         }}>
             <Box>
-                {alerts.map((formSubmission, index) => {
-                    return (<Alert severity="info" key={formSubmission.id}
-                        action = {
-                        <>
-                            <Button color="inherit" size="small" onClick={async() => {
-                                try {
-                                    closeAlert(index)
-                                    await saveLikedFormSubmission(formSubmission)
-                                    await getLikedFormSubmissions()
-                                } catch(e) {
-                                    console.log('error occured:', e)
-                                }
-                            }}>
-                            LIKE
-                            </Button>
-                            <Button color="inherit" size="small" onClick={() => {
-                                closeAlert(index)
-                            }}>
-                            X
-                            </Button>
-                        </>
-                    }>
-                        <AlertTitle>You have a new Submission!</AlertTitle>
-                        {formSubmission.data.firstName} {formSubmission.data.lastName} <span sx={{fontSize: 12}}>{formSubmission.data.email}</span>
-                    </Alert>)
-                })}
+                {alertsList}
             </Box>
         </Container>
     )

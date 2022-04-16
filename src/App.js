@@ -27,8 +27,6 @@ function App() {
   const [alerts, setAlerts] = useState([])
   const [likedFormSubmissions, setLikedFormSubmissions] = useState([])
 
-  console.log('setting up alerts:', alerts)
-
   function init() {
     onMessage((formSubmission) => {
       addAlert(formSubmission)
@@ -37,15 +35,12 @@ function App() {
   }
 
   function addAlert(alert) {
-    console.log('alerts before push:', alerts)
     setAlerts([...alerts, alert])
-    console.log('alerts after push:', [...alerts, alert])
   }
 
   async function getLikedFormSubmissions() {
     const submissionsResponse = await fetchLikedFormSubmissions()
     setLikedFormSubmissions(submissionsResponse.formSubmissions)
-    console.log('liked form submisions', submissionsResponse.formSubmissions)
   }
 
   return (
