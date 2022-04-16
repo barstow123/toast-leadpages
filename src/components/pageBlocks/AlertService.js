@@ -3,11 +3,22 @@ import { AlertTitle } from '@mui/material';
 import Button from '@mui/material/Button'
 import Alert from '../reusable/Alert';
 import Box from '@mui/material/Box';
-import { saveLikedFormSubmission } from "../../service/mockServer";
+import { saveLikedFormSubmission } from "../../service/accessAPI";
 import { PinDropSharp } from "@mui/icons-material";
 
-export default function AlertService({alerts, getLikedFormSubmissions}) {
-    console.log('alerts:', alerts)
+export default function AlertService({alerts, setAlerts, getLikedFormSubmissions}) {
+
+    function closeAlert(index) {
+        // special case. if alerts length is 1, remove the only alert
+        if (alerts.length === 1) {
+            setAlerts([])
+            return
+        }
+
+        const newAlerts = alerts.splice(index, 1)
+        setAlerts(newAlerts)
+    }
+
     return (
         <Container sx={{
             bottom: 0,
@@ -20,17 +31,24 @@ export default function AlertService({alerts, getLikedFormSubmissions}) {
             position: 'absolute',
         }}>
             <Box>
-                {alerts.map(formSubmission => {
+                {alerts.map((formSubmission, index) => {
                     return (<Alert severity="info" key={formSubmission.id}
                         action = {
                         <>
                             <Button color="inherit" size="small" onClick={async() => {
-                                await saveLikedFormSubmission(formSubmission)
-                                await getLikedFormSubmissions()
+                                try {
+                                    closeAlert(index)
+                                    await saveLikedFormSubmission(formSubmission)
+                                    await getLikedFormSubmissions()
+                                } catch(e) {
+                                    console.log('error occured:', e)
+                                }
                             }}>
                             LIKE
                             </Button>
-                            <Button color="inherit" size="small">
+                            <Button color="inherit" size="small" onClick={() => {
+                                closeAlert(index)
+                            }}>
                             X
                             </Button>
                         </>

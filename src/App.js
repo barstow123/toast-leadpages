@@ -5,6 +5,7 @@ import { onMessage, fetchLikedFormSubmissions } from './service/accessAPI';
 
 import Header from './components/pageBlocks/Header';
 import Content from './components/pageBlocks/Content';
+import { AddAlert } from '@mui/icons-material';
 
 function App() {
 
@@ -26,13 +27,19 @@ function App() {
   const [alerts, setAlerts] = useState([])
   const [likedFormSubmissions, setLikedFormSubmissions] = useState([])
 
+  console.log('setting up alerts:', alerts)
+
   function init() {
     onMessage((formSubmission) => {
-      console.log('form submission:', formSubmission)
-      setAlerts([...alerts, formSubmission])
-      console.log('alerts:', [...alerts, formSubmission])
+      addAlert(formSubmission)
     })
     getLikedFormSubmissions()
+  }
+
+  function addAlert(alert) {
+    console.log('alerts before push:', alerts)
+    setAlerts([...alerts, alert])
+    console.log('alerts after push:', [...alerts, alert])
   }
 
   async function getLikedFormSubmissions() {
@@ -47,7 +54,7 @@ function App() {
       <Container>
         <Content likedFormSubmissions={likedFormSubmissions}/>
       </Container>
-      <AlertService alerts={alerts} getLikedFormSubmissions={getLikedFormSubmissions}/>
+      <AlertService alerts={alerts} setAlerts={setAlerts} getLikedFormSubmissions={getLikedFormSubmissions}/>
     </>
   );
 }

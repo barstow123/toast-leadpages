@@ -15,10 +15,11 @@ async function withRetry(callback) {
             const response = await callback()
             return response
         } catch(e) {
-            console.log("Error retrieving data from mock server:", e)
             if (retriesAttempted < NUMBER_OF_RETRIES) {
                 retriesAttempted++
                 return await tryCallback(callback)
+            } else {
+                return e
             }
         }
     }
