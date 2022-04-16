@@ -27,6 +27,7 @@ export default function Header() {
             Toast Exercise
           </Typography>
           <Button
+            data-testid="submission-button"
             variant="contained"
             size="small"
             color="secondary"

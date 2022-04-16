@@ -8,33 +8,21 @@ import { saveLikedFormSubmission } from "../../service/accessAPI";
 export default function AlertService({alerts, setAlerts, getLikedFormSubmissions}) {
 
     function closeAlert(index) {
-        // special case. if alerts length is 1, remove the only alert
-        if (alerts.length === 1) {
-            setAlerts([])
-            return
-        }
-
-        const newAlerts = alerts.splice(index, 1)
-        setAlerts(newAlerts)
+        setAlerts([...alerts.slice(0, index), ...alerts.slice(index+1, alerts.length)])
     }
 
     const alertsList = alerts.map((formSubmission, index) => {
         return (<Alert severity="info" key={formSubmission.id}
             action = {
             <>
-                <Button color="inherit" size="small" onClick={async() => {
-                    try {
-                        closeAlert(index)
-                        await saveLikedFormSubmission(formSubmission)
-                        await getLikedFormSubmissions()
-                        console.log('submission liked')
-                    } catch(e) {
-                        console.log('error occured:', e)
-                    }
+                <Button color="inherit" size="small" data-testid="like-button" onClick={async() => {
+                    closeAlert(index)
+                    await saveLikedFormSubmission(formSubmission)
+                    await getLikedFormSubmissions()
                 }}>
                 LIKE
                 </Button>
-                <Button color="inherit" size="small" onClick={() => {
+                <Button color="inherit" size="small" data-testid="dismiss-button" onClick={() => {
                     closeAlert(index)
                 }}>
                 X
@@ -50,12 +38,12 @@ export default function AlertService({alerts, setAlerts, getLikedFormSubmissions
         <Container sx={{
             bottom: 0,
             right: 0,
-            maxHeigth: '1200px',
-            height: 'calc(100%-64px)',
+            maxHeight: 'calc(100% - 64px)',
             maxWidth: '500px',
             width: '60%',
             marginRight: 0,
             position: 'absolute',
+            overflowY: 'hidden'
         }}>
             <Box>
                 {alertsList}

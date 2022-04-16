@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from '@mui/material/Container';
 import AlertService from './components/pageBlocks/AlertService'
 import { onMessage, fetchLikedFormSubmissions } from './service/accessAPI';
@@ -22,23 +22,26 @@ function App() {
   const [alerts, setAlerts] = useState([])
   const [likedFormSubmissions, setLikedFormSubmissions] = useState([])
 
-  function init() {
-    onMessage((formSubmission) => {
-      addAlert(formSubmission)
-    })
+  useEffect(() => {
     getLikedFormSubmissions()
-  }
+  }, [])
+
+  onMessage(formSubmission => {
+    addAlert(formSubmission)
+  })
 
   function addAlert(alert) {
     setAlerts([...alerts, alert])
   }
 
   async function getLikedFormSubmissions() {
-    const submissionsResponse = await fetchLikedFormSubmissions()
-    setLikedFormSubmissions(submissionsResponse.formSubmissions)
+    try {
+      const submissionsResponse = await fetchLikedFormSubmissions()
+      setLikedFormSubmissions(submissionsResponse.formSubmissions)
+    } catch(e) {
+      console.log('error occured getting liked form submissions:', e)
+    }
   }
-
-  init()
 
   return (
     <>
