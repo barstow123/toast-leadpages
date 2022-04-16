@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Container from '@mui/material/Container';
 import AlertService from './components/pageBlocks/AlertService'
 import { onMessage, fetchLikedFormSubmissions } from './service/accessAPI';
 
 import Header from './components/pageBlocks/Header';
 import Content from './components/pageBlocks/Content';
-import { AddAlert } from '@mui/icons-material';
 
 function App() {
 
@@ -19,10 +18,6 @@ function App() {
           SSR provides very significant performance improvements at scale
 
   */
-
-  useEffect(() => {
-    init()
-  }, [])
 
   const [alerts, setAlerts] = useState([])
   const [likedFormSubmissions, setLikedFormSubmissions] = useState([])
@@ -42,6 +37,8 @@ function App() {
     const submissionsResponse = await fetchLikedFormSubmissions()
     setLikedFormSubmissions(submissionsResponse.formSubmissions)
   }
+
+  init()
 
   return (
     <>

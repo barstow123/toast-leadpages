@@ -27,6 +27,7 @@ export default function AlertService({alerts, setAlerts, getLikedFormSubmissions
                         closeAlert(index)
                         await saveLikedFormSubmission(formSubmission)
                         await getLikedFormSubmissions()
+                        console.log('submission liked')
                     } catch(e) {
                         console.log('error occured:', e)
                     }
